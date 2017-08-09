@@ -203,6 +203,13 @@ open class CombinedChartView: BarLineChartViewBase, CombinedChartDataProvider
         set { (renderer as! CombinedChartRenderer!).drawRoundedBarEnabled = newValue }
     }
     
+    /// if set to true, drawing gradeint bar is enabled, false if not.
+    open var drawGradientEnabled: Bool
+        {
+        get { return (renderer as! CombinedChartRenderer!).drawRoundedBarEnabled }
+        set { (renderer as! CombinedChartRenderer!).drawRoundedBarEnabled = newValue }
+    }
+    
     /// - returns: `true` if drawing values above bars is enabled, `false` ifnot
     open var isDrawValueAboveBarEnabled: Bool { return (renderer as! CombinedChartRenderer!).drawValueAboveBarEnabled }
     
@@ -232,4 +239,7 @@ open class CombinedChartView: BarLineChartViewBase, CombinedChartDataProvider
 
     /// - returns: `true` if drawing rounded bars is enabled, `false` ifnot
     open var isDrawRoundedBarEnabled: Bool { return drawRoundedBarEnabled }
+    
+    /// - returns: true if drawing gradeint bars is enabled, false if not.
+    open var isDrawGradientEnabled: Bool { return drawGradientEnabled }
 }

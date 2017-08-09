@@ -23,7 +23,10 @@ open class BarChartView: BarLineChartViewBase, BarChartDataProvider
     
     /// if set to true, a rounded rectangle with the corners is drawn on each bar
     fileprivate var _drawRoundedBarEnabled = false
-
+    
+    /// If true, gradient bars are drawn instead of solid
+    fileprivate var _drawGradientEnabled = false
+    
     internal override func initialize()
     {
         super.initialize()
@@ -174,6 +177,17 @@ open class BarChartView: BarLineChartViewBase, BarChartDataProvider
         }
     }
     
+    /// If true, gradient bars are drawn instead of solid
+    open var drawGradientEnabled: Bool
+        {
+        get { return _drawGradientEnabled }
+        set
+        {
+            _drawGradientEnabled = newValue
+            setNeedsDisplay()
+        }
+    }
+    
     /// Adds half of the bar width to each side of the x-axis range in order to allow the bars of the barchart to be fully displayed.
     /// **default**: false
     open var fitBars = false
@@ -197,4 +211,8 @@ open class BarChartView: BarLineChartViewBase, BarChartDataProvider
 
     /// - returns: `true` if drawing rounded bars is enabled, `false` ifnot
     open var isDrawRoundedBarEnabled: Bool { return drawRoundedBarEnabled }
+    
+    /// - returns: true if drawing gradeint bars is enabled, false if not.
+    open var isDrawGradientEnabled: Bool { return drawGradientEnabled }
+
 }

@@ -38,6 +38,18 @@ public protocol IBarChartDataSet: IBarLineScatterCandleBubbleChartDataSet
     /// the option rounding bar corners
     var barRoundingCorners: UIRectCorner { get set }
     #endif
+    
+    /// - returns: The start point for the gradient fill
+    var barGradientStartPoint : CGFloat { get set }
+    
+    /// - returns: The end point for the gradient fill
+    var barGradientEndPoint : CGFloat { get set }
+    
+    /// the option rounding bar corners
+    var barGradientColors: [NSUIColor] { get set }
+    
+    /// - returns: The gradient color at the given index of the DataSet's gradientColors array
+    func barGradientColor(atIndex: Int) -> NSUIColor
 
     /// the alpha value (transparency) that is used for drawing the highlight indicator bar. min = 0.0 (fully transparent), max = 1.0 (fully opaque)
     var highlightAlpha: CGFloat { get set }

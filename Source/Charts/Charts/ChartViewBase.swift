@@ -362,13 +362,18 @@ open class ChartViewBase: NSUIView, ChartDataProvider, AnimatorDelegate
             context.saveGState()
             defer { context.restoreGState() }
             
+            let paragraph = NSMutableParagraphStyle()
+            paragraph.alignment = .center
+            
+            let attributes: [String : AnyObject] = [NSFontAttributeName: noDataFont,
+                                                    NSForegroundColorAttributeName: noDataTextColor,
+                                                    NSParagraphStyleAttributeName: paragraph]
+            
             ChartUtils.drawMultilineText(
                 context: context,
                 text: noDataText,
                 point: CGPoint(x: frame.width / 2.0, y: frame.height / 2.0),
-                attributes:
-                [NSFontAttributeName: noDataFont,
-                 NSForegroundColorAttributeName: noDataTextColor],
+                attributes: attributes,
                 constrainedToSize: self.bounds.size,
                 anchor: CGPoint(x: 0.5, y: 0.5),
                 angleRadians: 0.0)

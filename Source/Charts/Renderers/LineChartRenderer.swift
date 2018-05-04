@@ -303,6 +303,7 @@ open class LineChartRenderer: LineRadarRenderer
         let valueToPixelMatrix = trans.valueToPixelMatrix
         
         let entryCount = dataSet.entryCount
+        let extraChartLeftOffset = dataSet.extraChartLeftOffset
         let isDrawSteppedEnabled = dataSet.mode == .stepped
         let pointsPerEntryPair = isDrawSteppedEnabled ? 4 : 2
         
@@ -401,9 +402,12 @@ open class LineChartRenderer: LineRadarRenderer
                     e2 = dataSet.entryForIndex(x)
                     
                     if e1 == nil || e2 == nil { continue }
-                    
+                    var x = e1.x
+                    if(extraChartLeftOffset > 0) {
+                        x = e1.x + Double(dataSet.circleRadius / (CGFloat(extraChartLeftOffset) - dataSet.circleRadius))
+                    }
                     let pt = CGPoint(
-                        x: CGFloat(e1.x),
+                        x: CGFloat(x),
                         y: CGFloat(e1.y * phaseY)
                         ).applying(valueToPixelMatrix)
                     
@@ -425,8 +429,13 @@ open class LineChartRenderer: LineRadarRenderer
                             ).applying(valueToPixelMatrix))
                     }
                     
+                    var x2 = e2.x
+                    if(extraChartLeftOffset > 0) {
+                        x2 = e2.x + Double(dataSet.circleRadius / (CGFloat(extraChartLeftOffset) - dataSet.circleRadius))
+                    }
+                    
                     context.addLine(to: CGPoint(
-                            x: CGFloat(e2.x),
+                            x: CGFloat(x2),
                             y: CGFloat(e2.y * phaseY)
                         ).applying(valueToPixelMatrix))
                 }
@@ -666,7 +675,7 @@ open class LineChartRenderer: LineRadarRenderer
                 
                 context.setFillColor(dataSet.getCircleColor(atIndex: j)!.cgColor)
                 
-                rect.origin.x = pt.x - circleRadius
+                rect.origin.x = pt.x - circleRadius + CGFloat(dataSet.extraChartLeftOffset)
                 rect.origin.y = pt.y - circleRadius
                 rect.size.width = circleDiameter
                 rect.size.height = circleDiameter

@@ -109,6 +109,7 @@ open class BarChartView: BarLineChartViewBase, BarChartDataProvider
         var bounds = CGRect(x: left, y: top, width: right - left, height: bottom - top)
         
         getTransformer(forAxis: set.axisDependency).rectValueToPixel(&bounds)
+        bounds = CGRect(x:bounds.origin.x + CGFloat(set.extraChartLeftOffset), y:bounds.origin.y, width: bounds.size.width, height: bounds.size.height)
         
         return bounds
     }

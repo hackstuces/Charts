@@ -15,6 +15,8 @@ import CoreGraphics
 
 open class LineChartDataSet: LineRadarChartDataSet, ILineChartDataSet
 {
+    public var extraChartLeftOffset: Int = 0
+    
     @objc(LineChartMode)
     public enum Mode: Int
     {

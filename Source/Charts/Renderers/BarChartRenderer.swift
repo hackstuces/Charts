@@ -221,6 +221,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
         let borderWidth = dataSet.barBorderWidth
         let borderColor = dataSet.barBorderColor
         let drawBorder = borderWidth > 0.0
+        let extraChartLeftOffset = dataSet.extraChartLeftOffset
         
         context.saveGState()
         
@@ -408,8 +409,8 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                         context.clip()
                         context.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
                     }
-                    
-                    let bezierPath = UIBezierPath(roundedRect: barRect, byRoundingCorners: dataSet.barRoundingCorners, cornerRadii: cornerRadius)
+                let cleanRect = CGRect(x: barRect.origin.x + CGFloat(extraChartLeftOffset), y: barRect.origin.y, width: barRect.size.width, height: barRect.size.height)
+                    let bezierPath = UIBezierPath(roundedRect: cleanRect, byRoundingCorners: dataSet.barRoundingCorners, cornerRadii: cornerRadius)
                     bezierPath.fill()
                     context.saveGState()
                     

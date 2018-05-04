@@ -33,6 +33,9 @@ public protocol IBarChartDataSet: IBarLineScatterCandleBubbleChartDataSet
 
     /// the color drawing borders around the bars.
     var barBorderColor: NSUIColor { get set }
+    
+    /// the color drawing borders around the bars.
+    var extraChartLeftOffset: Int { get set }
 
     #if !os(OSX)
     /// the option rounding bar corners

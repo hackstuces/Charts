@@ -15,6 +15,8 @@ import CoreGraphics
 
 open class BarChartDataSet: BarLineScatterCandleBubbleChartDataSet, IBarChartDataSet
 {
+    public var extraChartLeftOffset: Int = 0
+    
     fileprivate func initialize()
     {
         self.highlightColor = NSUIColor.black

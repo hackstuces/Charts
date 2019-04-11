@@ -14,13 +14,13 @@ import CoreGraphics
 
 open class CombinedChartRenderer: DataRenderer
 {
-    open weak var chart: CombinedChartView?
+    @objc open weak var chart: CombinedChartView?
     
     /// if set to true, all values are drawn above their bars, instead of below their top
-    open var drawValueAboveBarEnabled = true
+    @objc open var drawValueAboveBarEnabled = true
     
     /// if set to true, a grey area is drawn behind each bar that indicates the maximum value
-    open var drawBarShadowEnabled = false
+    @objc open var drawBarShadowEnabled = false
     
     /// if set to true, a rounded rectangle with the corners is drawn on each bar
     open var drawRoundedBarEnabled = false
@@ -29,7 +29,7 @@ open class CombinedChartRenderer: DataRenderer
     
     internal var _drawOrder: [CombinedChartView.DrawOrder] = [.bar, .bubble, .line, .candle, .scatter]
     
-    public init(chart: CombinedChartView?, animator: Animator, viewPortHandler: ViewPortHandler?)
+    @objc public init(chart: CombinedChartView, animator: Animator, viewPortHandler: ViewPortHandler)
     {
         super.init(animator: animator, viewPortHandler: viewPortHandler)
         
@@ -43,11 +43,7 @@ open class CombinedChartRenderer: DataRenderer
     {
         _renderers = [DataRenderer]()
         
-        guard let
-            chart = chart,
-            let animator = animator,
-            let viewPortHandler = self.viewPortHandler
-            else { return }
+        guard let chart = chart else { return }
 
         for order in drawOrder
         {
@@ -102,6 +98,22 @@ open class CombinedChartRenderer: DataRenderer
     
     open override func drawData(context: CGContext)
     {
+        // If we redraw the data, remove and repopulate accessible elements to update label values and frames
+        accessibleChartElements.removeAll()
+
+        if
+            let combinedChart = chart,
+            let data = combinedChart.data {
+            // Make the chart header the first element in the accessible elements array
+            let element = createAccessibleHeader(usingChart: combinedChart,
+                                                 andData: data,
+                                                 withDefaultDescription: "Combined Chart")
+            accessibleChartElements.append(element)
+        }
+
+        // TODO: Due to the potential complexity of data presented in Combined charts, a more usable way
+        // for VO accessibility would be to use axis based traversal rather than by dataset.
+        // Hence, accessibleChartElements is not populated below. (Individual renderers guard against dataSource being their respective views)
         for renderer in _renderers
         {
             renderer.drawData(context: context)
@@ -159,8 +171,8 @@ open class CombinedChartRenderer: DataRenderer
         }
     }
 
-    /// - returns: The sub-renderer object at the specified index.
-    open func getSubRenderer(index: Int) -> DataRenderer?
+    /// - Returns: The sub-renderer object at the specified index.
+    @objc open func getSubRenderer(index: Int) -> DataRenderer?
     {
         if index >= _renderers.count || index < 0
         {
@@ -172,8 +184,8 @@ open class CombinedChartRenderer: DataRenderer
         }
     }
 
-    /// - returns: All sub-renderers.
-    open var subRenderers: [DataRenderer]
+    /// All sub-renderers.
+    @objc open var subRenderers: [DataRenderer]
     {
         get { return _renderers }
         set { _renderers = newValue }
@@ -181,11 +193,11 @@ open class CombinedChartRenderer: DataRenderer
     
     // MARK: Accessors
     
-    /// - returns: `true` if drawing values above bars is enabled, `false` ifnot
-    open var isDrawValueAboveBarEnabled: Bool { return drawValueAboveBarEnabled }
+    /// `true` if drawing values above bars is enabled, `false` ifnot
+    @objc open var isDrawValueAboveBarEnabled: Bool { return drawValueAboveBarEnabled }
     
-    /// - returns: `true` if drawing shadows (maxvalue) for each bar is enabled, `false` ifnot
-    open var isDrawBarShadowEnabled: Bool { return drawBarShadowEnabled }
+    /// `true` if drawing shadows (maxvalue) for each bar is enabled, `false` ifnot
+    @objc open var isDrawBarShadowEnabled: Bool { return drawBarShadowEnabled }
     
     /// the order in which the provided data objects should be drawn.
     /// The earlier you place them in the provided array, the further they will be in the background.
